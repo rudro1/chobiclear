@@ -200,13 +200,16 @@ export default function RootLayout({
 
  
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZJDVM7SR0H');
-</script>
+<script
+  dangerouslySetInnerHTML={{
+    __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ZJDVM7SR0H');
+    `,
+  }}
+/>
       </head>
       <body>
 
@@ -214,19 +217,8 @@ export default function RootLayout({
 
           
         {children}
-        {/* Google Analytics 4 — replace G-XXXXXXXXXX with your measurement ID */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_ID}', { page_path: window.location.pathname });
-          `}
-        </Script>
+      
+     
       </body>
     </html>
   );
