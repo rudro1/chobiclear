@@ -199,6 +199,22 @@ export default function RootLayout({
 
 <meta name="google-adsense-account" content="ca-pub-1764798798736579" />
 
+        {/* Google Analytics (gtag.js) */}
+<Script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"
+  strategy="afterInteractive"
+/>
+<Script id="google-analytics" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZJDVM7SR0H');
+  `}
+</Script>
+
       </head>
       <body>
 
