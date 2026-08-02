@@ -52,7 +52,7 @@ const PLANS = [
   },
 ];
 
-export default function PricingSection() {
+export default function PricingSection({ onBuyClick }: { onBuyClick?: () => void }) {
   return (
     <section className="section" id="pricing" aria-labelledby="pricing-heading">
       <div className="container">
@@ -94,14 +94,25 @@ export default function PricingSection() {
                 ))}
               </ul>
 
-              <a
-                href={plan.ctaHref}
-                className={`btn ${plan.ctaClass}`}
-                style={{ width: "100%", display: "flex" }}
-                id={`pricing-cta-${plan.id}`}
-              >
-                {plan.cta}
-              </a>
+              {plan.id === "free" ? (
+                <a
+                  href={plan.ctaHref}
+                  className={`btn ${plan.ctaClass}`}
+                  style={{ width: "100%", display: "flex" }}
+                  id={`pricing-cta-${plan.id}`}
+                >
+                  {plan.cta}
+                </a>
+              ) : (
+                <button
+                  className={`btn ${plan.ctaClass}`}
+                  style={{ width: "100%", display: "flex" }}
+                  id={`pricing-cta-${plan.id}`}
+                  onClick={onBuyClick}
+                >
+                  {plan.cta}
+                </button>
+              )}
             </div>
           ))}
         </div>
