@@ -196,7 +196,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
-<meta name="google-adsense-account" content="ca-pub-1764798798736579">
+
+<meta name="google-adsense-account" content="ca-pub-1764798798736579" />
 
       </head>
       <body>
