@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { removeBackground } from "@imgly/background-removal";
 
 interface UploaderProps {
-  onResult: (resultId: string, previewUrl: string) => void;
-  onLoading: (loading: boolean) => void;
+  onResult: (blob: Blob, originalName: string) => void;
+  onLoading: (loading: boolean, progress?: number) => void;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export default function Uploader({ onResult, onLoading }: UploaderProps) {
@@ -29,35 +29,23 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
         return;
       }
 
-      onLoading(true);
+      onLoading(true, 0);
 
       try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const token = localStorage.getItem("cc_token");
-        const headers: HeadersInit = {};
-        if (token) headers["Authorization"] = `Bearer ${token}`;
-
-        const res = await fetch(`${API_URL}/remove-bg`, {
-          method: "POST",
-          headers,
-          body: formData,
+        const resultBlob = await removeBackground(file, {
+          progress: (key: string, current: number, total: number) => {
+            const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+            onLoading(true, pct);
+          },
+          // Use the CDN-hosted WASM/ONNX assets — no config needed
+          publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/",
         });
 
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.detail || "Background removal failed.");
-        }
-
-        const data = await res.json();
-
-        // Build a preview URL for the free download (watermarked)
-        const previewUrl = `${API_URL}/download/${data.result_id}`;
-        onResult(data.result_id, previewUrl);
+        onLoading(false, 100);
+        onResult(resultBlob, file.name.replace(/\.[^.]+$/, "") + "_nobg.png");
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : "Something went wrong.";
-        setError(msg);
+        const msg = e instanceof Error ? e.message : "Background removal failed.";
+        setError("⚠️ " + msg + " — try a different image or browser.");
         onLoading(false);
       }
     },
@@ -77,7 +65,7 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) processFile(file);
-    e.target.value = ""; // allow re-uploading same file
+    e.target.value = "";
   };
 
   return (
@@ -99,7 +87,7 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
           {isDragging ? "Drop your image here!" : "Drag & drop or click to upload"}
         </p>
         <p className="upload-sub">
-          JPG, PNG, WebP · Max 10 MB
+          JPG, PNG, WebP · Max 10 MB · Processed in your browser 🔒
         </p>
         <button
           className="btn btn-primary"
@@ -134,7 +122,7 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
             textAlign: "center",
           }}
         >
-          ⚠️ {error}
+          {error}
         </div>
       )}
     </div>

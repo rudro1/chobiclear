@@ -16,23 +16,33 @@ const HOW_STEPS = [
   {
     emoji: "⚡",
     title: "AI Removes Background",
-    desc: "Our U²-Net deep learning model processes your image in seconds.",
+    desc: "Our AI model runs directly in your browser — private & instant.",
   },
   {
     emoji: "⬇️",
     title: "Download Result",
-    desc: "Get your transparent PNG. Free with watermark, HD for paid users.",
+    desc: "Get a clean transparent PNG. Full quality, completely free.",
   },
 ];
 
+interface Result {
+  blob: Blob;
+  fileName: string;
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ id: string; url: string } | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState<Result | null>(null);
 
-  const handleResult = (resultId: string, previewUrl: string) => {
-    setResult({ id: resultId, url: previewUrl });
+  const handleLoading = (isLoading: boolean, pct = 0) => {
+    setLoading(isLoading);
+    setProgress(pct);
+  };
+
+  const handleResult = (blob: Blob, fileName: string) => {
+    setResult({ blob, fileName });
     setLoading(false);
-    // Smooth scroll to result
     setTimeout(() => {
       document.getElementById("result-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
@@ -41,6 +51,7 @@ export default function Home() {
   const handleReset = () => {
     setResult(null);
     setLoading(false);
+    setProgress(0);
     document.getElementById("upload")?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -51,7 +62,7 @@ export default function Home() {
       {/* ─── Hero ──────────────────────────────────────────────────────── */}
       <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-tag">
-          <span className="badge badge-primary">🇧🇩 Made for Bangladesh · সম্পূর্ণ বিনামূল্যে</span>
+          <span className="badge badge-primary">🇧🇩 Made for Bangladesh · সম্পূর্ণ বিনামূল্যে · No Signup</span>
         </div>
 
         <h1 id="hero-heading">
@@ -60,8 +71,8 @@ export default function Home() {
         </h1>
 
         <p className="hero-sub">
-          Upload any photo and let AI instantly erase the background. No signup, no
-          install — 100% free online. Fast, accurate, private.
+          Upload any photo and let AI instantly erase the background.
+          Runs privately in your browser — no upload to any server, no signup, 100% free.
         </p>
 
         <a href="#upload" className="btn btn-primary btn-lg">
@@ -70,16 +81,16 @@ export default function Home() {
 
         <div className="hero-stats">
           <div className="hero-stat">
-            <div className="hero-stat-value">5s</div>
+            <div className="hero-stat-value">~5s</div>
             <div className="hero-stat-label">Average processing time</div>
           </div>
           <div className="hero-stat">
             <div className="hero-stat-value">100%</div>
-            <div className="hero-stat-label">Free, no signup</div>
+            <div className="hero-stat-label">Free · No signup</div>
           </div>
           <div className="hero-stat">
-            <div className="hero-stat-value">60min</div>
-            <div className="hero-stat-label">Auto file deletion</div>
+            <div className="hero-stat-value">🔒</div>
+            <div className="hero-stat-label">In-browser · Private</div>
           </div>
           <div className="hero-stat">
             <div className="hero-stat-value">PNG</div>
@@ -89,37 +100,47 @@ export default function Home() {
       </section>
 
       {/* ─── Upload / Result ───────────────────────────────────────────── */}
-      <section
-        id="upload"
-        aria-label="Background remover tool"
-        style={{ padding: "48px 20px 64px" }}
-      >
+      <section id="upload" aria-label="Background remover tool" style={{ padding: "48px 20px 64px" }}>
         <div className="container" style={{ maxWidth: 700 }}>
-          {/* Loading state */}
+
+          {/* Loading */}
           {loading && (
             <div className="loading-wrapper" id="loading-indicator">
               <div className="spinner" />
-              <p className="loading-title">Removing background…</p>
+              <p className="loading-title">
+                {progress < 10
+                  ? "Loading AI model… (first time may take ~10s)"
+                  : progress < 95
+                  ? `Removing background… ${progress}%`
+                  : "Finalising…"}
+              </p>
               <div className="loading-bar">
-                <div className="loading-bar-fill" />
+                <div
+                  className="loading-bar-fill"
+                  style={{
+                    width: `${Math.max(8, progress)}%`,
+                    transition: "width 0.4s ease",
+                    animation: "none",
+                  }}
+                />
               </div>
-              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                AI is analyzing your image ✨
+              <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                Everything runs in your browser — your image is never uploaded 🔒
               </p>
             </div>
           )}
 
           {/* Uploader */}
           {!loading && !result && (
-            <Uploader onResult={handleResult} onLoading={setLoading} />
+            <Uploader onResult={handleResult} onLoading={handleLoading} />
           )}
 
           {/* Result */}
           {!loading && result && (
             <div id="result-section">
               <ResultView
-                resultId={result.id}
-                previewUrl={result.url}
+                blob={result.blob}
+                fileName={result.fileName}
                 onReset={handleReset}
               />
             </div>
@@ -138,7 +159,7 @@ export default function Home() {
           <div className="section-header">
             <span className="badge badge-primary" style={{ marginBottom: 12 }}>Simple Process</span>
             <h2 id="how-heading">How ChobiClear Works</h2>
-            <p>Remove backgrounds in 3 simple steps — no technical skills needed.</p>
+            <p>Remove backgrounds in 3 simple steps — AI runs right in your browser.</p>
           </div>
 
           <div className="steps-grid">
