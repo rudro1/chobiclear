@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-<!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,9 +12,9 @@ import "./globals.css";
 
   gtag('config', 'G-ZJDVM7SR0H');
 </script>
-// ── Replace these with your real IDs ──────────────────────────────────────
+{/* // ── Replace these with your real IDs ──────────────────────────────────────
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-XXXXXXXXXXXXXXXX";
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-XXXXXXXXXXXXXXXX"; */}
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -205,7 +205,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
 
-        <!-- Google tag (gtag.js) -->
+ 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -217,7 +217,7 @@ export default function RootLayout({
       </head>
       <body>
 
-        <!-- Google tag (gtag.js) -->
+    
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
