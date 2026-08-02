@@ -182,7 +182,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-<!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
