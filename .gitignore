@@ -1,0 +1,23 @@
+# Python / backend
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Node / frontend
+node_modules/
+.next/
+out/
+
+# Temp storage
+backend/uploads/
+backend/results/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/

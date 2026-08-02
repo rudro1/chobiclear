@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environment
+.env
+*.env
+
+# Temp storage
+uploads/
+results/
+
+# rembg model cache (large — user downloads on first run)
+# Uncomment if you want to exclude:
+# .u2net/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
