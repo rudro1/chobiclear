@@ -23,7 +23,6 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
         setError("Please upload a JPG, PNG, or WebP image.");
         return;
       }
-
       if (file.size > MAX_FILE_SIZE) {
         setError("Image must be smaller than 10 MB.");
         return;
@@ -32,20 +31,26 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
       onLoading(true, 0);
 
       try {
+        // Use default publicPath — automatically resolves to staticimgly.com CDN
         const resultBlob = await removeBackground(file, {
           progress: (key: string, current: number, total: number) => {
-            const pct = total > 0 ? Math.round((current / total) * 100) : 0;
-            onLoading(true, pct);
+            if (total > 0) {
+              const pct = Math.round((current / total) * 100);
+              onLoading(true, pct);
+            }
           },
-          // Use the CDN-hosted WASM/ONNX assets — no config needed
-          publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/",
+          // Do NOT override publicPath — let the library use its built-in CDN
         });
 
-        onLoading(false, 100);
         onResult(resultBlob, file.name.replace(/\.[^.]+$/, "") + "_nobg.png");
+        onLoading(false, 100);
       } catch (e: unknown) {
-        const msg = e instanceof Error ? e.message : "Background removal failed.";
-        setError("⚠️ " + msg + " — try a different image or browser.");
+        console.error("removeBackground error:", e);
+        const msg = e instanceof Error ? e.message : String(e);
+        setError(
+          "Background removal failed: " + msg.slice(0, 120) +
+          " — Please try again or use a different browser (Chrome recommended)."
+        );
         onLoading(false);
       }
     },
@@ -86,9 +91,7 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
         <p className="upload-title">
           {isDragging ? "Drop your image here!" : "Drag & drop or click to upload"}
         </p>
-        <p className="upload-sub">
-          JPG, PNG, WebP · Max 10 MB · Processed in your browser 🔒
-        </p>
+        <p className="upload-sub">JPG, PNG, WebP · Max 10 MB · Runs in your browser 🔒</p>
         <button
           className="btn btn-primary"
           id="upload-btn"
@@ -117,12 +120,12 @@ export default function Uploader({ onResult, onLoading }: UploaderProps) {
             border: "1px solid rgba(239,68,68,0.25)",
             borderRadius: 10,
             color: "#dc2626",
-            fontSize: "0.875rem",
+            fontSize: "0.85rem",
             fontWeight: 500,
             textAlign: "center",
           }}
         >
-          {error}
+          ⚠️ {error}
         </div>
       )}
     </div>
