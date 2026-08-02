@@ -4,9 +4,9 @@ import Script from "next/script";
 import "./globals.css";
 
 
-{/* // ── Replace these with your real IDs ──────────────────────────────────────
+// ── Replace these with your real IDs ──────────────────────────────────────
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-XXXXXXXXXXXXXXXX"; */}
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-XXXXXXXXXXXXXXXX"; 
 
 const poppins = Poppins({
   subsets: ["latin"],
