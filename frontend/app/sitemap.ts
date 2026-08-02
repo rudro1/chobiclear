@@ -10,7 +10,7 @@ const BLOG_POSTS = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://chobiclear.com";
+  const baseUrl = "https://chobiclear.vercel.app/";
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
