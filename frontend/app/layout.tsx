@@ -3,15 +3,7 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-<meta name="google-adsense-account" content="ca-pub-1764798798736579">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZJDVM7SR0H');
-</script>
 {/* // ── Replace these with your real IDs ──────────────────────────────────────
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
 const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-XXXXXXXXXXXXXXXX"; */}
@@ -204,6 +196,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+<meta name="google-adsense-account" content="ca-pub-1764798798736579">
 
  
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
@@ -218,14 +211,7 @@ export default function RootLayout({
       <body>
 
     
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-ZJDVM7SR0H');
-</script>
           
         {children}
         {/* Google Analytics 4 — replace G-XXXXXXXXXX with your measurement ID */}
