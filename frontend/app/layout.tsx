@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-
+<meta name="google-adsense-account" content="ca-pub-1764798798736579">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJDVM7SR0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
